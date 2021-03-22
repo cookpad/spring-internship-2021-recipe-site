@@ -10,6 +10,10 @@ type Props = {
 const RecipePage: NextPage<Props> = (props) => {
   const { recipe } = props;
 
+    if (recipe  === null) {
+        return <div>loading...</div>
+    } 
+    
   return (
     <div>
       <h1>My Recipe Site</h1>

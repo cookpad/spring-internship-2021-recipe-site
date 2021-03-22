@@ -11,7 +11,6 @@ export async function getRecipeList(url: string | null): Promise<Response> {
     const res = await fetch(
         url ? url : URL + "recipes",
         {
-            method: "GET",
             headers: headers,
         });
     const response: Response = await res.json();
