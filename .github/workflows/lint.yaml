@@ -1,0 +1,20 @@
+name: Lint
+
+on: pull_request
+
+jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1 
+      - name: Install packages
+        run: npm install
+      - name: Lint with review
+        uses: reviewdog/action-eslint@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          level: "error"
+          reporter: github-pr-review
+          fail_on_error: true
+          eslint_flags: '**/*.{ts,tsx}'
