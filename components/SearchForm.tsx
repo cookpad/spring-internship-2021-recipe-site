@@ -1,11 +1,31 @@
 import React, { FC, useState } from "react";
+import { useRouter } from "next/router";
+import { QueryParameter } from "../@types/recipe-api/getSearch";
 
 type Props = {
   initialQuery: string;
-  queryChangeHandler: (query: string) => void;
 };
 
 export const SearchForm: FC<Props> = (props) => {
+  const router = useRouter();
+
+  const updateQuery = (queryString: string) => {
+    const query: QueryParameter = { keyword: queryString };
+    router.push({ pathname: "/recipes", query: query });
+  };
+
+  return (
+    <SearchInput
+      initialQuery={props.initialQuery}
+      queryChangeHandler={updateQuery}
+    />
+  );
+};
+
+const SearchInput: FC<{
+  initialQuery: string;
+  queryChangeHandler: (query: string) => void;
+}> = (props) => {
   const [text, setText] = useState<string>(props.initialQuery);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

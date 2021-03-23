@@ -27,7 +27,6 @@ const SearchPage: FC = () => {
   useEffect(() => {
     (async () => {
       try {
-        console.log(query);
         const res = query
           ? await RecipeAPISearch.searchRecipes(query)
           : await RecipeAPIAll.getRecipes();
@@ -55,22 +54,9 @@ const SearchPage: FC = () => {
     setQuery(query);
   }, [router.query.keyword]);
 
-  const updateQueryParameter = async (query: QueryParameter) => {
-    try {
-      if (query) {
-        router.push({ pathname: "/recipes", query: query });
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
     <div>
-      <SearchForm
-        initialQuery={query ? query.keyword : ""}
-        queryChangeHandler={(q) => updateQueryParameter({ keyword: q })}
-      />
+      <SearchForm initialQuery={query ? query.keyword : ""} />
 
       {(() => {
         switch (state.type) {
