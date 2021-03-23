@@ -13,11 +13,10 @@ export const fetchApi = async (
   if (!API_ENDPOINT_HOST) throw new Error();
   if (!API_KEY) throw new Error();
 
-  const url =
-    Protcol +
-    API_ENDPOINT_HOST +
-    endpoint +
-    new URLSearchParams(parameter).toString();
+  const parameterString = parameter
+    ? "?" + new URLSearchParams(parameter).toString()
+    : "";
+  const url = Protcol + API_ENDPOINT_HOST + endpoint + parameterString;
   console.log(url);
   return await fetch(url, {
     method: method,

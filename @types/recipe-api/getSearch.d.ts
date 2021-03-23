@@ -1,3 +1,4 @@
+import { NotFound } from "./notFound";
 import { Recipe } from "./recipe";
 
 // Request
@@ -19,4 +20,4 @@ export type APIResponse = {
     next?: string;
     prev?: string;
   };
-};
+} | NotFound;
