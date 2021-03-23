@@ -1,19 +1,19 @@
-import { getRecipe } from "../../lib/recipe";
+import type { GetServerSideProps, NextPage } from 'next'
+import { getRecipe } from '../../lib/recipe'
 
-import type { GetServerSideProps, NextPage } from "next";
-import type { Recipe } from "../../types/recipe";
+import type { Recipe } from '../../types/recipe'
 
 type Props = {
-  recipe: Recipe;
-};
+  recipe: Recipe
+}
 
 const RecipePage: NextPage<Props> = (props) => {
-  const { recipe } = props;
+  const { recipe } = props
 
-    if (recipe  === null) {
-        return <div>loading...</div>
-    } 
-    
+  if (recipe === null) {
+    return <div>loading...</div>
+  }
+
   return (
     <div>
       <h1>My Recipe Site</h1>
@@ -46,23 +46,23 @@ const RecipePage: NextPage<Props> = (props) => {
         </main>
       )}
     </div>
-  );
-};
+  )
+}
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const id = Number(context.params?.id);
+  const id = Number(context.params?.id)
   if (id === 0 || isNaN(id)) {
     return {
       notFound: true,
-    };
+    }
   } else {
-    const recipe = await getRecipe(id);
+    const recipe = await getRecipe(id)
     return {
       props: {
         recipe: recipe,
       },
-    };
+    }
   }
-};
+}
 
-export default RecipePage;
+export default RecipePage
