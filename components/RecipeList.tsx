@@ -8,10 +8,14 @@ export const RecipeList: FC<Props> = (props) => {
     <ul>
       {props.recipes.map((recipe, i) => (
         <li key={i}>
-          {recipe.image_url && <img src={recipe.image_url} alt="レシピ画像" />}
+          <a href={"/recipes/" + recipe.id.toString()}>
+            {recipe.image_url && (
+              <img src={recipe.image_url} alt="レシピ画像" />
+            )}
 
-          <h2>{recipe.title}</h2>
-          <p>{recipe.description}</p>
+            <h2>{recipe.title}</h2>
+            <p>{recipe.description}</p>
+          </a>
         </li>
       ))}
     </ul>
