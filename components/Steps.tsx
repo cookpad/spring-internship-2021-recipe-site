@@ -4,10 +4,13 @@ type Props = { steps: string[] };
 
 export const Steps: FC<Props> = (props) => {
   return (
-    <ol>
-      {props.steps.map((step, i) => (
-        <li key={i}>{step}</li>
-      ))}
-    </ol>
+    <div className="recipeSubsection">
+      <h2>手順</h2>
+      <ol>
+        {props.steps.map((step, i) => (
+          <li key={i}>{step}</li>
+        ))}
+      </ol>
+    </div>
   );
 };

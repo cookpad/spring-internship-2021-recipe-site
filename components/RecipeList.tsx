@@ -6,21 +6,24 @@ type Props = { recipes: Recipe[] };
 
 export const RecipeList: FC<Props> = (props) => {
   return (
-    <div>
+    <ol className="recipeList">
       {props.recipes.map((recipe, i) => (
-        <article key={i}>
-          <Link href={"/recipes/" + recipe.id.toString()}>
-            <div>
-              {recipe.image_url && (
-                <img src={recipe.image_url} alt="レシピ画像" />
-              )}
-
-              <h2>{recipe.title}</h2>
-              <p>{recipe.description}</p>
-            </div>
-          </Link>
-        </article>
+        <li key={i}>
+          <article>
+            <Link href={"/recipes/" + recipe.id.toString()}>
+              <div className="recipeListItem">
+                {recipe.image_url && (
+                  <img src={recipe.image_url} alt="レシピ画像" />
+                )}
+                <div>
+                  <h2>{recipe.title}</h2>
+                  <p>{recipe.description}</p>
+                </div>
+              </div>
+            </Link>
+          </article>
+        </li>
       ))}
-    </div>
+    </ol>
   );
 };

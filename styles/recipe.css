@@ -1,0 +1,15 @@
+.recipeImage {
+  width: 100%;
+}
+
+.recipeSubsection {
+  border-bottom: 1px solid beige;
+  font-size: 16px;
+  margin: 0;
+  padding: 10px;
+}
+
+.recipeMetadata {
+  display: flex;
+  justify-content: space-between;
+}

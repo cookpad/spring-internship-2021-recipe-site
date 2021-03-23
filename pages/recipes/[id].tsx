@@ -61,11 +61,17 @@ const RecipePage: FC = () => {
             <h2>{state.recipe.title}</h2>
 
             {state.recipe.image_url && (
-              <img src={state.recipe.image_url} alt="レシピ画像" />
+              <img
+                className="recipeImage"
+                src={state.recipe.image_url}
+                alt="レシピ画像"
+              />
             )}
 
-            <p>{state.recipe.author.user_name}</p>
-            <p>{state.recipe.published_at}</p>
+            <div className="recipeMetadata">
+              <p>{state.recipe.author.user_name}</p>
+              <p>{state.recipe.published_at}</p>
+            </div>
 
             <p>{state.recipe.description}</p>
 

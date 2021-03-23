@@ -1,0 +1,21 @@
+.title {
+  background-color: lightgray;
+  font-size: 20px;
+  margin: 0;
+  padding: 10px;
+  color: black;
+}
+
+.searchForm {
+  margin: 0;
+  padding: 10px;
+}
+
+.searchForm > form > input {
+  border-width: 1px;
+  border-color: lightgray;
+  border-radius: 5px;
+  padding: 2px;
+  width: 100%;
+  max-width: height;
+}

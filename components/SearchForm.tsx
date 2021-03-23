@@ -38,7 +38,7 @@ const SearchInput: FC<{
   };
 
   return (
-    <div>
+    <div className="searchForm">
       <form onSubmit={handleSubmit}>
         <input
           type="text"

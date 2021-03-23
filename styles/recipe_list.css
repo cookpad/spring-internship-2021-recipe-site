@@ -1,0 +1,20 @@
+.recipeList {
+  list-style-type: none;
+}
+
+.recipeListItem {
+  display: flex;
+  justify-content: start;
+  padding: 0.1%;
+  border-bottom: 1px solid lightgray;
+}
+
+.recipeListItem > img {
+  width: 40%;
+  object-fit: contain;
+  padding: 5px;
+}
+
+.recipeListItem > div {
+  padding: 1%;
+}
