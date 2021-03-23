@@ -69,10 +69,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       recipe = await getRecipe(id);
     } catch (e) {
       if (e.message == "Not Found") return { notFound: true };
-      else
-        throw new Error(
-          "Unexpected error happened while fetching a recipe for its page"
-        );
+      else throw e;
     }
     return {
       props: { recipe: recipe },
