@@ -46,7 +46,8 @@ const SearchInput: FC<{
           placeholder="検索"
           spellCheck="true"
           onChange={handleChange}
-        ></input>
+          value={props.initialQuery}
+        />
       </form>
     </div>
   );
