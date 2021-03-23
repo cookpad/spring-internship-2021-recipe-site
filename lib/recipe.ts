@@ -60,23 +60,24 @@ type Response = {
   };
 };
 
-export async function getRecipes(param?: QueryParameter): Promise<Response> {
+export async function getRecipes(query?: QueryParameter): Promise<Response> {
   // 開発中に API サーバーを不必要に叩きすぎないようにする
-  if (process.env.NODE_ENV === "development")
-    return require("../data/recipes.json") as Response;
+  // if (process.env.NODE_ENV === "development")
+  //   return require("../data/recipes.json") as Response;
 
-  let headers: Headers;
+  let params = {};
+  if (query.page) params["page"] = query.page.toString();
+  if (query.id) params["id"] = query.id;
 
-  if (param) {
-    headers["id"] = param.id?.toString();
-    headers["page"] = param.page;
-  }
-
-  const req = await api(API_ENDPOINT_RECIPES);
+  const req = await api(
+    `${API_ENDPOINT_RECIPES}?${new URLSearchParams(params)}`
+  );
   return (await req.json()) as Response;
 }
 
 export async function getRecipe(id: number): Promise<Recipe | null> {
   const req = await api(`${API_ENDPOINT_RECIPES}/${id}`);
-  return (await req.json()) as Recipe;
+  const json = await req.json();
+  if (!req.ok) throw new Error(json.message);
+  return json as Recipe;
 }

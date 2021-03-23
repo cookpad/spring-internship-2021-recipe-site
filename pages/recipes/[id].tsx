@@ -1,7 +1,9 @@
 import { GetServerSideProps, NextPage } from "next";
+import Header from "../../components/header";
 import { getRecipe, Recipe } from "../../lib/recipe";
 
 type Props = {
+  // ページで表示するレシピ
   recipe: Recipe;
 };
 
@@ -10,30 +12,40 @@ const RecipePage: NextPage<Props> = (props) => {
 
   return (
     <div>
-      <h1>料理検索</h1>
+      <Header />
       {recipe && (
         <main>
-          <h2>{recipe.title}</h2>
-
           {recipe.image_url && (
-            <img src={recipe.image_url} alt="レシピ画像" width="300" />
+            <img src={recipe.image_url} alt="レシピ画像" className="w-full" />
           )}
 
-          <p>{recipe.description}</p>
+          <h2 className="text-xl mt-3 mb-2 mx-4">{recipe.title}</h2>
 
-          <h3>材料</h3>
-          <ol>
-            {recipe.ingredients.map((ing, i) => (
-              <li key={i}>
-                {ing.name} : {ing.quantity}
-              </li>
-            ))}
-          </ol>
+          <div className="flex justify-between">
+            <span className="m-2 ml-4">{recipe.author.user_name}</span>
+            <span className="m-2 mr-4">
+              {new Date(recipe.published_at).toLocaleDateString()}
+            </span>
+          </div>
 
-          <h3>手順</h3>
-          <ol>
+          <p className="m-3">{recipe.description}</p>
+
+          <h3 className="px-2 py-1 bg-gray-300 mb-2">材料</h3>
+          <div className="divide-y">
+            {recipe.ingredients
+              .filter((ing) => ing.name !== "")
+              .map((ing, i) => (
+                <div className="flex justify-between">
+                  <span className="font-semibold m-2 ml-4">{ing.name}</span>
+                  <span className="m-2 mr-4">{ing.quantity}</span>
+                </div>
+              ))}
+          </div>
+
+          <h3 className="px-2 py-1 bg-gray-300 mb-2">手順</h3>
+          <ol className="divide-y list-decimal list-inside">
             {recipe.steps.map((step, i) => (
-              <li key={i}>{step}</li>
+              <li className="p-2">{step}</li>
             ))}
           </ol>
         </main>
@@ -49,7 +61,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       notFound: true,
     };
   } else {
-    const recipe = await getRecipe(id);
+    let recipe: Recipe;
+
+    // 該当 ID のレシピが存在しない場合は not found を返す。
+    // それ以外のエラーに今は対応せず、とりあえず例外を投げる
+    try {
+      recipe = await getRecipe(id);
+    } catch (e) {
+      if (e.message == "Not Found") return { notFound: true };
+      else
+        throw new Error(
+          "Unexpected error happened while fetching a recipe for its page"
+        );
+    }
     return {
       props: { recipe: recipe },
     };

@@ -1,13 +1,27 @@
 import Link from "next/link";
-import { NextPage } from "next";
+import next, { NextPage } from "next";
 import { FC } from "react";
 import { getRecipes, Recipe } from "../lib/recipe";
+import Header from "../components/header";
 
 type Props = {
+  // このページで表示するレシピのリスト
   recipes: Recipe[];
+
+  // ページネーション可能なとき、次のページに遷移するときに利用するパラメータを格納
+  nextRecipeAPIParamsString?: string;
+
+  // ページネーション可能なとき、前のページに遷移するときに利用するパラメータを格納
+  prevRecipeAPIParamsString?: string;
 };
 
-const RecipeComponent: FC<{ recipe: Recipe }> = ({ children, recipe }) => {
+/**
+ * レシピ一覧での各レシピの表示に利用するコンポーネント
+ */
+const RecipeListElementComponent: FC<{ recipe: Recipe }> = ({
+  children,
+  recipe,
+}) => {
   return (
     <a href={`recipes/${recipe.id}`} className="block">
       <div
@@ -22,7 +36,8 @@ const RecipeComponent: FC<{ recipe: Recipe }> = ({ children, recipe }) => {
               className="inline-block"
             />
           ) : (
-            <p>🍽️</p>
+            // レシピ画像がないときは絵文字を表示する
+            <p className="text-8xl text-center">🍽️</p>
           )}
         </div>
         <div className="recipe-summary flex-1">
@@ -34,28 +49,63 @@ const RecipeComponent: FC<{ recipe: Recipe }> = ({ children, recipe }) => {
   );
 };
 
+/**
+ * トップページ
+ */
 const TopPage: NextPage<Props> = (props) => {
-  const { recipes } = props;
+  const {
+    recipes,
+    nextRecipeAPIParamsString: nextAPIParamsString,
+    prevRecipeAPIParamsString: prevAPIParamsString,
+  } = props;
 
   return (
     <div>
-      <h1 className="text-xl font-semibold">料理検索</h1>
+      <Header />
 
       <div className="divide-y-4">
         {recipes.map((recipe) => (
-          <RecipeComponent recipe={recipe} />
+          <RecipeListElementComponent recipe={recipe} />
         ))}
       </div>
+
+      <footer className="flex justify-between m-4">
+        <div>
+          {prevAPIParamsString !== null && (
+            <a href={`?${prevAPIParamsString}`}>前のページ</a>
+          )}
+        </div>
+        <div>
+          {nextAPIParamsString !== null && (
+            <a href={`?${nextAPIParamsString.toString()}`}>次のページ</a>
+          )}
+        </div>
+      </footer>
     </div>
   );
 };
 
-export const getServerSideProps = async () => {
-  const response = await getRecipes();
+export const getServerSideProps = async ({ query }) => {
+  const response = await getRecipes({
+    page: query.page,
+  });
+
+  let nextRecipeAPIParamsString;
+  let prevRecipeAPIParamsString;
+  if (response.links) {
+    nextRecipeAPIParamsString = response.links.next
+      ? new URL(response.links.next).searchParams.toString()
+      : null;
+    prevRecipeAPIParamsString = response.links.prev
+      ? new URL(response.links.prev).searchParams.toString()
+      : null;
+  }
   return {
     props: {
       recipes: response.recipes,
-    },
+      nextRecipeAPIParamsString,
+      prevRecipeAPIParamsString,
+    } as Props,
   };
 };
 
