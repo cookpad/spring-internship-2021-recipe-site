@@ -9,15 +9,15 @@ import { Header } from "../../components/Header";
 
 type State =
   | {
-    type: "LOADING";
-  }
+      type: "LOADING";
+    }
   | {
-    type: "NOT_FOUND";
-  }
+      type: "NOT_FOUND";
+    }
   | {
-    type: "LOADED";
-    recipes: Recipe[];
-  };
+      type: "LOADED";
+      recipes: Recipe[];
+    };
 
 const SearchPage: FC = () => {
   const router = useRouter();
@@ -46,10 +46,10 @@ const SearchPage: FC = () => {
   useEffect(() => {
     const query = router.query.keyword
       ? {
-        keyword: !Array.isArray(router.query.keyword)
-          ? router.query.keyword
-          : "",
-      }
+          keyword: !Array.isArray(router.query.keyword)
+            ? router.query.keyword
+            : "",
+        }
       : undefined;
     setQuery(query);
   }, [router.query.keyword]);
