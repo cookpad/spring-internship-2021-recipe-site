@@ -15,8 +15,11 @@ const RecipePage: NextPage<Props> = (props) => {
       <Header />
       {recipe && (
         <main>
-          {recipe.image_url && (
+          {recipe.image_url ? (
             <img src={recipe.image_url} alt="レシピ画像" className="w-full" />
+          ) : (
+            // レシピ画像が無い場合は絵文字を表示
+            <p className="text-9xl text-center">🍽️</p>
           )}
 
           <h2 className="text-xl mt-3 mb-2 mx-4">{recipe.title}</h2>
