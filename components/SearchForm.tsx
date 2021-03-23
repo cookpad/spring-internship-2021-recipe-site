@@ -11,7 +11,7 @@ export const SearchForm: FC<Props> = (props) => {
 
   const updateQuery = (queryString: string) => {
     const query: QueryParameter = { keyword: queryString };
-    router.push({ pathname: "/recipes", query: query });
+    router.push({ pathname: "/recipes/search", query: query });
   };
 
   return (

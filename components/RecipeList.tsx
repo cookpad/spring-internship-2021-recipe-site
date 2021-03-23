@@ -31,7 +31,7 @@ export const RecipeList: FC<Props> = (props) => {
         ))}
       </ol>
 
-      <Page response={props.response} />
+      <Page currentPage={0} response={props.response} />
     </div>
   );
 };

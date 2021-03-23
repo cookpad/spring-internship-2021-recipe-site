@@ -1,10 +1,10 @@
 import React, { FC, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import * as RecipeAPI from "../../recipe-api/getRecipes";
+import * as RecipeAPI from "../../recipe-api/getSearch";
 import {
-  APIResponse,
   QueryParameter,
-} from "../../@types/recipe-api/getRecipes";
+  APISuccessResponse,
+} from "../../@types/recipe-api/getSearch";
 import { RecipeList } from "../../components/RecipeList";
 import { Header } from "../../components/Header";
 
@@ -17,18 +17,27 @@ type State =
     }
   | {
       type: "LOADED";
-      response: APIResponse;
+      response: APISuccessResponse;
     };
 
-const TopPage: FC = () => {
+const SearchPage: FC = () => {
   const router = useRouter();
   const [state, setState] = useState<State>({ type: "LOADING" });
-  const [query, setQuery] = useState<QueryParameter>({});
+  const [query, setQuery] = useState<QueryParameter | undefined>(undefined);
 
   useEffect(() => {
     (async () => {
       try {
-        const res = await RecipeAPI.getRecipes(query);
+        if (!query) {
+          return;
+        }
+
+        const res = await RecipeAPI.searchRecipes(query);
+        if (res === "NOT_FOUND") {
+          setState({ type: "NOT_FOUND" });
+          return;
+        }
+
         setState({ type: "LOADED", response: res });
       } catch (error) {
         console.error(error);
@@ -37,31 +46,24 @@ const TopPage: FC = () => {
   }, [query]);
 
   useEffect(() => {
-    if (router.query.page) {
-      const query = Number(router.query.page);
-      if (!query || isNaN(query)) {
-        console.error("invelid query parameter");
-        return;
-      }
-
-      setQuery({ page: query });
+    const keywordString = router.query.keyword;
+    if (!keywordString || Array.isArray(keywordString)) {
+      setQuery(undefined);
       return;
     }
 
-    if (router.query.id) {
-      const query = router.query.id;
-      if (!Array.isArray(query)) {
-        console.error("invelid query parameter");
-        return;
-      }
+    const query: QueryParameter = {
+      keyword: keywordString as string,
+    };
 
-      setQuery({ id: query });
+    const page = Number(router.query.page);
+    if (!isNaN(page)) {
+      query.page = page;
       return;
     }
 
-    setQuery({});
-    return;
-  }, [router.query.page]);
+    setQuery(query);
+  }, [router.query.keyword, router.query.page]);
 
   const body = () => {
     switch (state.type) {
@@ -80,10 +82,10 @@ const TopPage: FC = () => {
 
   return (
     <div>
-      <Header initialQuery="" />
+      <Header initialQuery={query ? query.keyword : ""} />
       {body()}
     </div>
   );
 };
 
-export default TopPage;
+export default SearchPage;

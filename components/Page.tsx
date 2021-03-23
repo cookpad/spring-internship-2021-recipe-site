@@ -5,6 +5,7 @@ import * as SearchRecipes from "../@types/recipe-api/getSearch";
 
 type Props = {
   response: GetRecipes.APIResponse | SearchRecipes.APISuccessResponse;
+  currentPage: number;
 };
 
 export const Page: FC<Props> = (props) => {

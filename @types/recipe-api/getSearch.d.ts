@@ -11,15 +11,14 @@ export type QueryParameter = {
 };
 
 // Response
-export type APIResponse =
-  | {
-      // 検索にヒットしたレシピ一覧
-      recipes: Recipe[];
+export type APISuccessResponse = {
+  // 検索にヒットしたレシピ一覧
+  recipes: Recipe[];
 
-      // ページネーション可能な場合の次、前のページのリンク
-      links: {
-        next?: string;
-        prev?: string;
-      };
-    }
-  | NotFound;
+  // ページネーション可能な場合の次、前のページのリンク
+  links: {
+    next?: string;
+    prev?: string;
+  };
+};
+export type APIResponse = APISuccessResponse | NotFound;
