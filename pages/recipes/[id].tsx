@@ -8,18 +8,18 @@ import { Ingredients } from "../../components/Ingredients";
 
 type State =
   | {
-      type: "LOADING";
-    }
+    type: "LOADING";
+  }
   | {
-      type: "NOT_FOUND";
-    }
+    type: "NOT_FOUND";
+  }
   | {
-      type: "BAD_REQUEST";
-    }
+    type: "BAD_REQUEST";
+  }
   | {
-      type: "LOADED";
-      recipe: Recipe;
-    };
+    type: "LOADED";
+    recipe: Recipe;
+  };
 
 const RecipePage: FC = () => {
   const router = useRouter();
@@ -54,11 +54,7 @@ const RecipePage: FC = () => {
       case "NOT_FOUND":
         return <h1>Not Found</h1>;
       case "BAD_REQUEST":
-        return (
-          <div>
-            <h1>Bad Request</h1>
-          </div>
-        );
+        return <h2>Bad Request</h2>;
       case "LOADED":
         return (
           <div>
