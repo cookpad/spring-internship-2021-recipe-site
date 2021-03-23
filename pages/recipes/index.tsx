@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import * as RecipeAPI from "../../recipe-api/getRecipes";
 import { Recipe } from "../../@types/recipe-api/recipe";
+import { RecipeList } from "../../components/RecipeList";
 
 type State =
   | {
@@ -31,20 +32,7 @@ const SearchPage: FC = () => {
     case "LOADING":
       return <h1>Loading</h1>;
     case "LOADED":
-      return (
-        <ul>
-          {state.recipes.map((recipe, i) => (
-            <li>
-              {recipe.image_url && (
-                <img src={recipe.image_url} alt="レシピ画像" />
-              )}
-
-              <h2>{recipe.title}</h2>
-              <p>{recipe.description}</p>
-            </li>
-          ))}
-        </ul>
-      );
+      return <RecipeList recipes={state.recipes} />;
     default: {
       const _exhaustiveCheck: never = state;
       return _exhaustiveCheck;
