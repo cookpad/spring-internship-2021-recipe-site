@@ -70,7 +70,7 @@ const SearchPage: FC = () => {
         return <h2>Loading</h2>;
       case "NOT_FOUND":
         return <h2>Not Found</h2>;
-      case "LOADED":
+      case "LOADED": {
         const previous =
           query && state.response.links.prev
             ? () => {
@@ -102,6 +102,7 @@ const SearchPage: FC = () => {
             next={next}
           />
         );
+      }
       default: {
         const _exhaustiveCheck: never = state;
         return _exhaustiveCheck;
