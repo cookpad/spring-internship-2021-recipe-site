@@ -17,7 +17,7 @@ const Header: FC<Props> = (props) => {
     <header>
       <div className="p-4 bg-gray-300">
         <a href="/">
-          <p className="text-lg text-center">タイトル</p>
+          <p className="text-lg text-center">料理板</p>
         </a>
       </div>
 
