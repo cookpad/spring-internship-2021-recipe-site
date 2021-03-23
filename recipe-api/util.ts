@@ -17,7 +17,6 @@ export const fetchApi = async (
     ? "?" + new URLSearchParams(parameter).toString()
     : "";
   const url = Protcol + API_ENDPOINT_HOST + endpoint + parameterString;
-  console.log(url);
   return await fetch(url, {
     method: method,
     headers: { "X-Api-Key": API_KEY },
