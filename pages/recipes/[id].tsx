@@ -74,9 +74,10 @@ const RecipePage: FC = () => {
 
                 </div>
             );
-        default:
+        default: {
             const _exhaustiveCheck: never = state;
             return _exhaustiveCheck;
+        }
     }
 };
 
