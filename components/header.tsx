@@ -13,7 +13,9 @@ const Header: FC<Props> = (props) => {
   };
 
   const onSearchTriggered = () => {
-    const elem = document.getElementById(SEARCH_BAR_INPUT_ID);
+    const elem = document.getElementById(
+      SEARCH_BAR_INPUT_ID
+    ) as HTMLInputElement;
     const keyword = elem.value;
 
     // 検索窓に何かが入力されていた場合、検索を開始
