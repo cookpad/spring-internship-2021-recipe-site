@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { FC } from "react";
 
 type Props = {
@@ -25,9 +26,9 @@ const Header: FC<Props> = (props) => {
   return (
     <header>
       <div className="p-4 bg-gray-300">
-        <a href="/">
+        <Link href="/">
           <p className="text-lg text-center">料理板</p>
-        </a>
+        </Link>
       </div>
 
       <div className="p-4 bg-gray-100 w-full flex justify-content">

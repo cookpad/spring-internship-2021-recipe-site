@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { FC } from "react";
 import { Recipe } from "../lib/recipe";
 
@@ -6,7 +7,7 @@ import { Recipe } from "../lib/recipe";
  */
 const RecipeListElement: FC<{ recipe: Recipe }> = ({ children, recipe }) => {
   return (
-    <a href={`recipes/${recipe.id}`} className="block">
+    <Link href={`recipes/${recipe.id}`}>
       <div
         className="recipe-element-container flex items-center m-4"
         key={recipe.id}
@@ -28,7 +29,7 @@ const RecipeListElement: FC<{ recipe: Recipe }> = ({ children, recipe }) => {
           <p className="recipe-description text-sm">{recipe.description}</p>
         </div>
       </div>
-    </a>
+    </Link>
   );
 };
 
