@@ -1,7 +1,7 @@
 // [こちら](https://gist.github.com/hokaccha/0db2c6c26ec0f7dfc680cf5010e61180#api%E4%BB%95%E6%A7%98%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E5%9E%8B)を流用
 
 import api from "./api-client";
-import { API_ENDPOINT_RECIPES } from "./constants";
+import { API_ENDPOINT_RECIPES, API_ENDPOINT_SEARCH } from "./constants";
 
 export type Recipe = {
   // レシピID
@@ -40,7 +40,7 @@ export type Recipe = {
   related_recipes: number[];
 };
 
-type QueryParameter = {
+type GetRecipesQueryParameter = {
   // ページネーションする場合に指定するページ番号。
   page?: number;
 
@@ -49,7 +49,7 @@ type QueryParameter = {
   id?: string;
 };
 
-type Response = {
+type GetRecipesResponse = {
   // レシピ一覧
   recipes: Recipe[];
 
@@ -60,7 +60,9 @@ type Response = {
   };
 };
 
-export async function getRecipes(query?: QueryParameter): Promise<Response> {
+export async function getRecipes(
+  query?: GetRecipesQueryParameter
+): Promise<GetRecipesResponse> {
   // 開発中に API サーバーを不必要に叩きすぎないようにする
   // if (process.env.NODE_ENV === "development")
   //   return require("../data/recipes.json") as Response;
@@ -72,7 +74,40 @@ export async function getRecipes(query?: QueryParameter): Promise<Response> {
   const req = await api(
     `${API_ENDPOINT_RECIPES}?${new URLSearchParams(params)}`
   );
-  return (await req.json()) as Response;
+  return (await req.json()) as GetRecipesResponse;
+}
+
+type SearchRecipesQueryParameter = {
+  // 検索キーワード。マルチバイト文字列の場合は URL Encode が必用。
+  keyword: string;
+
+  // ページネーションする場合に指定するページ番号
+  page?: number;
+};
+
+export type SearchRecipesResponse = {
+  // 検索にヒットしたレシピ一覧
+  recipes: Recipe[];
+
+  // ページネーション可能な場合の次、前のページのリンク
+  links: {
+    next?: string;
+    prev?: string;
+  };
+};
+
+export async function searchRecipes(
+  query?: SearchRecipesQueryParameter
+): Promise<SearchRecipesResponse> {
+  let params = { keyword: query.keyword };
+  if (query.page) params["page"] = query.page.toString();
+
+  const req = await api(
+    `${API_ENDPOINT_SEARCH}?${new URLSearchParams(params)}`
+  );
+  const json = await req.json();
+  if (!req.ok) throw new Error(json.message);
+  return json as SearchRecipesResponse;
 }
 
 export async function getRecipe(id: number): Promise<Recipe | null> {

@@ -1,10 +1,15 @@
 import { FC } from "react";
 
-const Header: FC = (props) => {
+type Props = {
+  searchQuery?: string;
+};
+
+const Header: FC<Props> = (props) => {
   const onKeyPress = (e) => {
-    // エンターが押下されたとき検索
+    // 検索窓に何かが入力されていて、かつエンターが押下されたとき検索を開始
     if (e.which == 13) {
-      // WIP
+      const keyword = e.target.value;
+      if (keyword) location.href = `/search?keyword=${keyword}`;
     }
   };
 
@@ -20,6 +25,7 @@ const Header: FC = (props) => {
         <input
           type="search"
           name="search"
+          defaultValue={props.searchQuery}
           placeholder="検索"
           className="border-2 border-gray-300 bg-white h-10 w-full px-5  object-center rounded-lg text-sm focus:outline-none"
           onKeyPress={onKeyPress}

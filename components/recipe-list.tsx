@@ -30,7 +30,7 @@ const RecipeList: FC<Props> = (props) => {
     <div>
       <div className="divide-y-4">
         {recipes.map((recipe) => (
-          <RecipeListElement recipe={recipe} />
+          <RecipeListElement key={recipe.id} recipe={recipe} />
         ))}
       </div>
 
