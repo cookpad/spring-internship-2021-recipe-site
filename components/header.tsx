@@ -1,3 +1,4 @@
+import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
 import { FC } from "react";
 
@@ -7,6 +8,7 @@ type Props = {
 
 const Header: FC<Props> = (props) => {
   const SEARCH_BAR_INPUT_ID = "search-bar-input";
+  const router = useRouter();
 
   const onSearchSubmitted = (e) => {
     // エンターが押下されたとき検索を開始
@@ -20,7 +22,7 @@ const Header: FC<Props> = (props) => {
     const keyword = elem.value;
 
     // 検索窓に何かが入力されていた場合、検索を開始
-    if (keyword) location.href = `/search?keyword=${keyword}`;
+    if (keyword) router.push(`/search?keyword=${keyword}`);
   };
 
   return (
