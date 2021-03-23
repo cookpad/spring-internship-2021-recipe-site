@@ -5,7 +5,7 @@ import * as RecipeAPIAll from "../../recipe-api/getRecipes";
 import { Recipe } from "../../@types/recipe-api/recipe";
 import { QueryParameter } from "../../@types/recipe-api/getSearch";
 import { RecipeList } from "../../components/RecipeList";
-import { SearchForm } from "../../components/SearchForm";
+import { Header } from "../../components/Header";
 
 type State =
   | {
@@ -54,24 +54,25 @@ const SearchPage: FC = () => {
     setQuery(query);
   }, [router.query.keyword]);
 
+  const body = () => {
+    switch (state.type) {
+      case "LOADING":
+        return <h1>Loading</h1>;
+      case "NOT_FOUND":
+        return <h1>Not Found</h1>;
+      case "LOADED":
+        return <RecipeList recipes={state.recipes} />;
+      default: {
+        const _exhaustiveCheck: never = state;
+        return _exhaustiveCheck;
+      }
+    }
+  };
+
   return (
     <div>
-      <SearchForm initialQuery={query ? query.keyword : ""} />
-
-      {(() => {
-        switch (state.type) {
-          case "LOADING":
-            return <h1>Loading</h1>;
-          case "NOT_FOUND":
-            return <h1>Not Found</h1>;
-          case "LOADED":
-            return <RecipeList recipes={state.recipes} />;
-          default: {
-            const _exhaustiveCheck: never = state;
-            return _exhaustiveCheck;
-          }
-        }
-      })()}
+      <Header initialQuery={query ? query.keyword : ""} />
+      {body()}
     </div>
   );
 };

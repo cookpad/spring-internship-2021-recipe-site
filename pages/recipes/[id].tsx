@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import * as RecipeAPI from "../../recipe-api/getRecipesId";
 import { Recipe } from "../../@types/recipe-api/recipe";
+import { Header } from "../../components/Header";
 import { Steps } from "../../components/Steps";
 import { Ingredients } from "../../components/Ingredients";
 
@@ -46,41 +47,50 @@ const RecipePage: FC = () => {
     })();
   }, [router.query.id]);
 
-  switch (state.type) {
-    case "LOADING":
-      return <h1>Loading</h1>;
-    case "NOT_FOUND":
-      return <h1>Not Found</h1>;
-    case "BAD_REQUEST":
-      return (
-        <div>
-          <h1>Bad Request</h1>
-        </div>
-      );
-    case "LOADED":
-      return (
-        <div>
-          <h2>{state.recipe.title}</h2>
+  const body = () => {
+    switch (state.type) {
+      case "LOADING":
+        return <h1>Loading</h1>;
+      case "NOT_FOUND":
+        return <h1>Not Found</h1>;
+      case "BAD_REQUEST":
+        return (
+          <div>
+            <h1>Bad Request</h1>
+          </div>
+        );
+      case "LOADED":
+        return (
+          <div>
+            <h2>{state.recipe.title}</h2>
 
-          {state.recipe.image_url && (
-            <img src={state.recipe.image_url} alt="レシピ画像" />
-          )}
+            {state.recipe.image_url && (
+              <img src={state.recipe.image_url} alt="レシピ画像" />
+            )}
 
-          <p>{state.recipe.author.user_name}</p>
-          <p>{state.recipe.published_at}</p>
+            <p>{state.recipe.author.user_name}</p>
+            <p>{state.recipe.published_at}</p>
 
-          <p>{state.recipe.description}</p>
+            <p>{state.recipe.description}</p>
 
-          <Ingredients ingredients={state.recipe.ingredients} />
+            <Ingredients ingredients={state.recipe.ingredients} />
 
-          <Steps steps={state.recipe.steps} />
-        </div>
-      );
-    default: {
-      const _exhaustiveCheck: never = state;
-      return _exhaustiveCheck;
+            <Steps steps={state.recipe.steps} />
+          </div>
+        );
+      default: {
+        const _exhaustiveCheck: never = state;
+        return _exhaustiveCheck;
+      }
     }
-  }
+  };
+
+  return (
+    <div>
+      <Header initialQuery="" />
+      {body()}
+    </div>
+  );
 };
 
 export default RecipePage;
