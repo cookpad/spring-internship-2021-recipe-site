@@ -6,6 +6,8 @@ import { Page } from "./Page";
 
 type Props = {
   response: GetRecipes.APIResponse | SearchRecipes.APISuccessResponse;
+  previous?: () => void;
+  next?: () => void;
 };
 
 export const RecipeList: FC<Props> = (props) => {
@@ -31,7 +33,7 @@ export const RecipeList: FC<Props> = (props) => {
         ))}
       </ol>
 
-      <Page currentPage={0} response={props.response} />
+      <Page previous={props.previous} next={props.next} />
     </div>
   );
 };

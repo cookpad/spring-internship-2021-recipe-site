@@ -59,7 +59,6 @@ const SearchPage: FC = () => {
     const page = Number(router.query.page);
     if (!isNaN(page)) {
       query.page = page;
-      return;
     }
 
     setQuery(query);
@@ -72,7 +71,37 @@ const SearchPage: FC = () => {
       case "NOT_FOUND":
         return <h2>Not Found</h2>;
       case "LOADED":
-        return <RecipeList response={state.response} />;
+        const previous =
+          query && state.response.links.prev
+            ? () => {
+                const page = query.page ? query.page : 1;
+                const newQuery: QueryParameter = {
+                  keyword: query.keyword,
+                  page: page - 1,
+                };
+                router.push({ pathname: "/recipes/search", query: newQuery });
+              }
+            : undefined;
+
+        const next =
+          query && state.response.links.next
+            ? () => {
+                const page = query.page ? query.page : 1;
+                const newQuery: QueryParameter = {
+                  keyword: query.keyword,
+                  page: page + 1,
+                };
+                router.push({ pathname: "/recipes/search", query: newQuery });
+              }
+            : undefined;
+
+        return (
+          <RecipeList
+            response={state.response}
+            previous={previous}
+            next={next}
+          />
+        );
       default: {
         const _exhaustiveCheck: never = state;
         return _exhaustiveCheck;

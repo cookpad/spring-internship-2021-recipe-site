@@ -61,7 +61,7 @@ const TopPage: FC = () => {
 
     setQuery({});
     return;
-  }, [router.query.page]);
+  }, [router.query.page, router.query.id]);
 
   const body = () => {
     switch (state.type) {
@@ -70,7 +70,31 @@ const TopPage: FC = () => {
       case "NOT_FOUND":
         return <h2>Not Found</h2>;
       case "LOADED":
-        return <RecipeList response={state.response} />;
+        const previous =
+          query && !("id" in query) && state.response.links.prev
+            ? () => {
+                const page = "page" in query ? query.page : 1;
+                const newQuery: QueryParameter = { page: page - 1 };
+                router.push({ pathname: "/recipes", query: newQuery });
+              }
+            : undefined;
+
+        const next =
+          query && !("id" in query) && state.response.links.next
+            ? () => {
+                const page = "page" in query ? query.page : 1;
+                const newQuery: QueryParameter = { page: page + 1 };
+                router.push({ pathname: "/recipes", query: newQuery });
+              }
+            : undefined;
+
+        return (
+          <RecipeList
+            response={state.response}
+            previous={previous}
+            next={next}
+          />
+        );
       default: {
         const _exhaustiveCheck: never = state;
         return _exhaustiveCheck;
