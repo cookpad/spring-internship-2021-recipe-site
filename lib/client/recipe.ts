@@ -5,6 +5,9 @@ import {
   CLIENT_API_ENDPOINT_SEARCH,
 } from "../constants";
 
+/**
+ * レシピ
+ */
 export type Recipe = {
   // レシピID
   id: number;
@@ -42,6 +45,9 @@ export type Recipe = {
   related_recipes: number[];
 };
 
+/**
+ * レシピ取得 API のクエリパラメーター
+ */
 type GetRecipesQueryParameter = {
   // ページネーションする場合に指定するページ番号。
   page?: number;
@@ -51,6 +57,9 @@ type GetRecipesQueryParameter = {
   id?: string;
 };
 
+/**
+ * レシピ取得 API のレスポンス
+ */
 type GetRecipesResponse = {
   // レシピ一覧
   recipes: Recipe[];
@@ -62,6 +71,11 @@ type GetRecipesResponse = {
   };
 };
 
+/**
+ * レシピ取得 API を叩き、結果を返します
+ * @param query ページ指定やレシピ ID（またはその列）が入っているクエリパラメーター
+ * @returns レシピ取得 API が返す結果
+ */
 export async function getRecipes(
   query?: GetRecipesQueryParameter
 ): Promise<GetRecipesResponse> {
@@ -81,6 +95,9 @@ export async function getRecipes(
   return (await req.json()) as GetRecipesResponse;
 }
 
+/**
+ * レシピ検索 API のクエリパラメーター
+ */
 type SearchRecipesQueryParameter = {
   // 検索キーワード。マルチバイト文字列の場合は URL Encode が必用。
   keyword: string;
@@ -89,6 +106,9 @@ type SearchRecipesQueryParameter = {
   page?: number;
 };
 
+/**
+ * レシピ検索 API のレスポンス
+ */
 export type SearchRecipesResponse = {
   // 検索にヒットしたレシピ一覧
   recipes: Recipe[];
@@ -100,6 +120,11 @@ export type SearchRecipesResponse = {
   };
 };
 
+/**
+ * レシピ検索 API を叩き、結果を返します
+ * @param query キーワードやページ指定が入っているクエリパラメーター
+ * @returns レシピ検索 API が返す結果
+ */
 export async function searchRecipes(
   query?: SearchRecipesQueryParameter
 ): Promise<SearchRecipesResponse> {
@@ -114,6 +139,11 @@ export async function searchRecipes(
   return json as SearchRecipesResponse;
 }
 
+/**
+ * 単一レシピ取得 API
+ * @param id 取得するレシピの ID
+ * @returns レシピの詳細
+ */
 export async function getRecipe(id: number): Promise<Recipe | null> {
   const req = await fetch(`${CLIENT_API_ENDPOINT_RECIPES}/${id}`);
   const json = await req.json();
