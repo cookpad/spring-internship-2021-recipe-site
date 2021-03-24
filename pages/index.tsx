@@ -50,7 +50,7 @@ const TopPage: NextPage = () => {
       />
       <Header />
       {recipes === null ? (
-        <div>loading...</div>
+        <div>やっています……</div>
       ) : (
         <RecipeList
           recipes={recipes}

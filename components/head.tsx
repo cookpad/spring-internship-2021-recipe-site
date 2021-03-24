@@ -5,13 +5,14 @@ import getCurrentFullUrl from "../lib/current-full-url";
 
 type Props = {
   title: string;
-  description: string;
-  image: string;
+  description?: string;
+  image?: string;
 };
 
 const Head: FC<Props> = (props) => {
   let { title, description, image } = props;
   if (!image) image = "https://placehold.jp/1200x630.png";
+  if (!description) description = "レシピ検索No.?／料理レシピ載せるなら 料理板";
   const router = useRouter();
   const url = getCurrentFullUrl(router.asPath);
 

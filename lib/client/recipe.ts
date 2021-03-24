@@ -131,9 +131,8 @@ export async function searchRecipes(
   let params = { keyword: query.keyword };
   if (query.page) params["page"] = query.page.toString();
 
-  const req = await fetch(
-    `${CLIENT_API_ENDPOINT_SEARCH}?${new URLSearchParams(params)}`
-  );
+  const url = `${CLIENT_API_ENDPOINT_SEARCH}?${new URLSearchParams(params)}`;
+  const req = await fetch(url);
   const json = await req.json();
   if (!req.ok) throw new Error(json.message);
   return json as SearchRecipesResponse;
@@ -148,5 +147,5 @@ export async function getRecipe(id: number): Promise<Recipe | null> {
   const req = await fetch(`${CLIENT_API_ENDPOINT_RECIPES}/${id}`);
   const json = await req.json();
   if (!req.ok) throw new Error(json.message);
-  return json as Recipe;
+  return json.recipes[0] as Recipe;
 }
