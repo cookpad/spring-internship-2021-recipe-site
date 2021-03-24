@@ -1,4 +1,4 @@
-import { GetServerSideProps, NextPage } from "next";
+import { GetServerSideProps, GetStaticProps, NextPage } from "next";
 import { useEffect, useState } from "react";
 import Head from "../../components/head";
 import Header from "../../components/header";
@@ -45,7 +45,7 @@ const RecipePage: NextPage<Props> = (props) => {
       {recipe && (
         <main>
           {recipe.image_url ? (
-            <div className="w-full">
+            <div className="w-full flex justify-content">
               <Image
                 src={recipe.image_url}
                 alt="レシピ画像"
@@ -103,10 +103,29 @@ const RecipePage: NextPage<Props> = (props) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({
-  params,
-  req,
-}) => {
+export const getStaticPaths = async () => {
+  if (process.env.NODE_ENV == "development")
+    return {
+      paths: [],
+      fallback: "blocking",
+    };
+  let response: GetRecipesResponse;
+  let page = 1;
+  const paths: string[] = [];
+  do {
+    response = await getRecipes({ page });
+    response.recipes.forEach((recipe) => {
+      paths.push(`/recipes/${recipe.id}`);
+    });
+    page++;
+  } while (!(response as any).message && page < 10);
+  return {
+    paths,
+    fallback: "blocking",
+  };
+};
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   const id = Number(params?.id);
   if (id === 0 || isNaN(id)) {
     return {
@@ -125,6 +144,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     }
     return {
       props: { recipe: recipe },
+      revalidate: 60 * 5,
     };
   }
 };
