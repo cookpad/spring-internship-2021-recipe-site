@@ -1,9 +1,10 @@
 // [こちら](https://gist.github.com/hokaccha/0db2c6c26ec0f7dfc680cf5010e61180#api%E4%BB%95%E6%A7%98%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E5%9E%8B)を流用
 
 import {
-  CLIENT_API_ENDPOINT_RECIPES,
-  CLIENT_API_ENDPOINT_SEARCH,
+  ORIGIN_API_ENDPOINT_RECIPES,
+  ORIGIN_API_ENDPOINT_SEARCH,
 } from "./constants";
+import api from "./server/api-client";
 
 /**
  * レシピ
@@ -79,18 +80,14 @@ export type GetRecipesResponse = {
 export async function getRecipes(
   query?: GetRecipesQueryParameter
 ): Promise<GetRecipesResponse> {
-  // 開発中に API サーバーを不必要に叩きすぎないようにする
-  // if (process.env.NODE_ENV === "development")
-  //   return require("../data/recipes.json") as Response;
-
   let params = {};
   if (query) {
     if (query.page) params["page"] = query.page.toString();
     if (query.id) params["id"] = query.id;
   }
 
-  const req = await fetch(
-    `${CLIENT_API_ENDPOINT_RECIPES}?${new URLSearchParams(params)}`
+  const req = await api(
+    `${ORIGIN_API_ENDPOINT_RECIPES}?${new URLSearchParams(params)}`
   );
   return (await req.json()) as GetRecipesResponse;
 }
@@ -131,8 +128,8 @@ export async function searchRecipes(
   let params = { keyword: query.keyword };
   if (query.page) params["page"] = query.page.toString();
 
-  const url = `${CLIENT_API_ENDPOINT_SEARCH}?${new URLSearchParams(params)}`;
-  const req = await fetch(url);
+  const url = `${ORIGIN_API_ENDPOINT_SEARCH}?${new URLSearchParams(params)}`;
+  const req = await api(url);
   const json = await req.json();
   if (!req.ok) throw new Error(json.message);
   return json as SearchRecipesResponse;
@@ -144,8 +141,9 @@ export async function searchRecipes(
  * @returns レシピの詳細
  */
 export async function getRecipe(id: number): Promise<Recipe | null> {
-  const req = await fetch(`${CLIENT_API_ENDPOINT_RECIPES}/${id}`);
+  const req = await api(`${ORIGIN_API_ENDPOINT_RECIPES}/${id}`);
   const json = await req.json();
-  if (!req.ok) throw new Error(json.message);
-  return json.recipes[0] as Recipe;
+  console.log(json);
+  if (json.message as any) throw new Error(json.message);
+  return json as Recipe;
 }
