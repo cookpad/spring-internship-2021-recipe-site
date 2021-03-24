@@ -143,7 +143,6 @@ export async function searchRecipes(
 export async function getRecipe(id: number): Promise<Recipe | null> {
   const req = await api(`${ORIGIN_API_ENDPOINT_RECIPES}/${id}`);
   const json = await req.json();
-  console.log(json);
   if (json.message as any) throw new Error(json.message);
   return json as Recipe;
 }
