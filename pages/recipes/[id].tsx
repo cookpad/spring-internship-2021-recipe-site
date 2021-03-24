@@ -1,30 +1,51 @@
-import { GetServerSideProps, NextPage } from "next";
-import { useState } from "react";
+import { NextPage } from "next";
+import { useEffect, useState } from "react";
 import Head from "../../components/head";
 import Header from "../../components/header";
 import { getRecipe, Recipe } from "../../lib/client/recipe";
-import {
-  initializeBookmark,
-  isInBookmark,
-  toggleBookmark,
-} from "../../lib/client/bookmark";
+import { toggleBookmark } from "../../lib/client/bookmark";
+import { useRouter } from "next/dist/client/router";
 
-type Props = {
-  // ページで表示するレシピ
-  recipe: Recipe;
+const RecipePage: NextPage = () => {
+  const router = useRouter();
+  const [recipe, setRecipe] = useState<Recipe | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [bookmarked, setBookmarked] = useState<boolean>(false);
 
-  // ページを開いた段階でブックマークに追加されているか
-  bookmarked: boolean;
-};
-
-const RecipePage: NextPage<Props> = (props) => {
-  const { recipe } = props;
-  const [bookmarked, setBookmarked] = useState(props.bookmarked);
+  useEffect(() => {
+    (async () => {
+      let recipe: Recipe;
+      try {
+        recipe = await getRecipe(Number(router.query.id));
+        setRecipe(recipe);
+      } catch (e) {
+        setError(e.message);
+      }
+      setRecipe(recipe);
+    })();
+  }, []);
 
   const onClickBookmarkButton = async () => {
-    const added = await toggleBookmark(props.recipe.id);
+    const added = await toggleBookmark(recipe.id);
     setBookmarked(added);
   };
+
+  if (error === null && recipe === null)
+    return (
+      <div>
+        <Head title="読込中 ─ 料理板" description="" image="" />
+        <Header />
+        <div>Loading...</div>
+      </div>
+    );
+  if (error !== null)
+    return (
+      <div>
+        <Head title="エラー ─ 料理板" description="" image="" />
+        <Header />
+        <div>{error}</div>
+      </div>
+    );
 
   return (
     <div>
@@ -85,33 +106,6 @@ const RecipePage: NextPage<Props> = (props) => {
       )}
     </div>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async ({
-  params,
-  req,
-}) => {
-  const id = Number(params?.id);
-  if (id === 0 || isNaN(id)) {
-    return {
-      notFound: true,
-    };
-  } else {
-    let recipe: Recipe;
-
-    // 該当 ID のレシピが存在しない場合は not found を返す。
-    // それ以外のエラーに今は対応せず、とりあえず例外を投げる
-    try {
-      recipe = await getRecipe(id);
-    } catch (e) {
-      if (e.message == "Not Found") return { notFound: true };
-      else throw e;
-    }
-    await initializeBookmark();
-    return {
-      props: { recipe: recipe, bookmarked: await isInBookmark(recipe.id) },
-    };
-  }
 };
 
 export default RecipePage;
