@@ -11,10 +11,17 @@
 
 .recipeListImage {
   flex-grow: 4;
-  flex-basis: 50px;
+  flex-basis: 75px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
 }
+
+
 
 .recipeListDescription {
   flex-grow: 6;
-  flex-basis: 50px;
+  flex-basis: 100px;
+  padding: 5px;
+  font-size: 60%;
 }
