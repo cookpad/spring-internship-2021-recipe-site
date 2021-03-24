@@ -6,17 +6,6 @@ import Header from "../components/header";
 import RecipeList from "../components/recipe-list";
 import { getRecipe, getRecipes, Recipe } from "../lib/client/recipe";
 
-type Props = {
-  // このページで表示するレシピのリスト
-  recipes: Recipe[];
-
-  // ページネーション可能なとき、次のページに遷移するときに利用するパラメータを格納
-  nextRecipeAPIParamsString?: string;
-
-  // ページネーション可能なとき、前のページに遷移するときに利用するパラメータを格納
-  prevRecipeAPIParamsString?: string;
-};
-
 const TopPage: NextPage = () => {
   const [recipes, setRecipes] = useState<Recipe[] | null>(null);
   const [nextRecipeAPIParamsString, setNextRecipeAPIParamsString] = useState<
@@ -30,7 +19,10 @@ const TopPage: NextPage = () => {
 
   useEffect(() => {
     (async () => {
+      // URL 内のページ番号の箇所 ?page=XXX を抽出。存在しない場合は 1 とする
       const page = router.query.page ? Number(router.query.page) : 1;
+
+      // レシピ取得 API を叩く
       const response = await getRecipes({ page });
       setRecipes(response.recipes);
 
@@ -69,29 +61,5 @@ const TopPage: NextPage = () => {
     </div>
   );
 };
-
-// export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-//   const response = await getRecipes({
-//     page: Number(query.page as string),
-//   });
-
-//   let nextRecipeAPIParamsString;
-//   let prevRecipeAPIParamsString;
-//   if (response.links) {
-//     nextRecipeAPIParamsString = response.links.next
-//       ? new URL(response.links.next).searchParams.toString()
-//       : null;
-//     prevRecipeAPIParamsString = response.links.prev
-//       ? new URL(response.links.prev).searchParams.toString()
-//       : null;
-//   }
-//   return {
-//     props: {
-//       recipes: response.recipes,
-//       nextRecipeAPIParamsString,
-//       prevRecipeAPIParamsString,
-//     } as Props,
-//   };
-// };
 
 export default TopPage;
