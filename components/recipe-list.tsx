@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { FC } from "react";
-import { Recipe } from "../lib/client/recipe";
+import { Recipe } from "../lib/recipe";
 import RecipeListElement from "./recipe-list-element";
 
 type Props = {

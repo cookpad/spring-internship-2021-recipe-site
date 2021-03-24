@@ -2,10 +2,16 @@ import { GetServerSideProps, NextPage } from "next";
 import { useEffect, useState } from "react";
 import Head from "../../components/head";
 import Header from "../../components/header";
-import { getRecipe, Recipe } from "../../lib/client/recipe";
+import {
+  getRecipe,
+  getRecipes,
+  GetRecipesResponse,
+  Recipe,
+} from "../../lib/recipe";
 import { toggleBookmark } from "../../lib/client/bookmark";
 import { useRouter } from "next/dist/client/router";
 import Image from "next/image";
+import recipes from "../api/recipes";
 
 type Props = {
   // ページで表示するレシピ

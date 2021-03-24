@@ -3,7 +3,7 @@
 import {
   CLIENT_API_ENDPOINT_RECIPES,
   CLIENT_API_ENDPOINT_SEARCH,
-} from "../constants";
+} from "./constants";
 
 /**
  * レシピ
@@ -48,7 +48,7 @@ export type Recipe = {
 /**
  * レシピ取得 API のクエリパラメーター
  */
-type GetRecipesQueryParameter = {
+export type GetRecipesQueryParameter = {
   // ページネーションする場合に指定するページ番号。
   page?: number;
 
@@ -60,7 +60,7 @@ type GetRecipesQueryParameter = {
 /**
  * レシピ取得 API のレスポンス
  */
-type GetRecipesResponse = {
+export type GetRecipesResponse = {
   // レシピ一覧
   recipes: Recipe[];
 
@@ -98,7 +98,7 @@ export async function getRecipes(
 /**
  * レシピ検索 API のクエリパラメーター
  */
-type SearchRecipesQueryParameter = {
+export type SearchRecipesQueryParameter = {
   // 検索キーワード。マルチバイト文字列の場合は URL Encode が必用。
   keyword: string;
 
