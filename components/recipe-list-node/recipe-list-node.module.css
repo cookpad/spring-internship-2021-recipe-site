@@ -1,0 +1,16 @@
+.recipeContainer {
+  margin: auto;
+  border-bottom:  solid #eee;
+  display: flex;
+  max-width: 500px;
+  margin-bottom: 30px;
+}
+
+.recipeImage {
+  margin: auto;
+  width: 200;
+}
+
+.recipeText {
+  padding-left: 10px;
+}
