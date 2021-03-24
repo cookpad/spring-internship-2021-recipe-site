@@ -12,7 +12,8 @@ type Props = {
 const Head: FC<Props> = (props) => {
   let { title, description, image } = props;
   if (!image) image = "https://placehold.jp/1200x630.png";
-  const url = getCurrentFullUrl();
+  const router = useRouter();
+  const url = getCurrentFullUrl(router.asPath);
 
   return (
     <NHead>
