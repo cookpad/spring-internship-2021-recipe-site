@@ -75,7 +75,7 @@ const RecipePage: NextPage<Props> = (props) => {
               className="text-lg p-2 mx-5 my-2 mb-4 bg-yellow-200 hover:bg-yellow-300 font-bold rounded"
               onClick={onClickBookmarkButton}
             >
-              {bookmarked ? "📌 レシピを保存" : "🗑️ ブックマーク解除"}
+              {!bookmarked ? "📌 レシピを保存" : "🗑️ ブックマーク解除"}
             </button>
           </div>
 
