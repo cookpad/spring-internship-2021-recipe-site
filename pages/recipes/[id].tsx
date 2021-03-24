@@ -1,4 +1,4 @@
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import { useEffect, useState } from "react";
 import Head from "../../components/head";
 import Header from "../../components/header";
@@ -7,22 +7,19 @@ import { toggleBookmark } from "../../lib/client/bookmark";
 import { useRouter } from "next/dist/client/router";
 import Image from "next/image";
 
-const RecipePage: NextPage = () => {
+type Props = {
+  // ページで表示するレシピ
+  recipe: Recipe;
+};
+
+const RecipePage: NextPage<Props> = (props) => {
   const router = useRouter();
-  const [recipe, setRecipe] = useState<Recipe | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const { recipe } = props;
   const [bookmarked, setBookmarked] = useState<boolean>(false);
 
   useEffect(() => {
     (async () => {
-      let recipe: Recipe;
-      try {
-        recipe = await getRecipe(Number(router.query.id));
-        setRecipe(recipe);
-      } catch (e) {
-        setError(e.message);
-      }
-      setRecipe(recipe);
+      // bookmark
     })();
   }, []);
 
@@ -30,23 +27,6 @@ const RecipePage: NextPage = () => {
     const added = await toggleBookmark(recipe.id);
     setBookmarked(added);
   };
-
-  if (error === null && recipe === null)
-    return (
-      <div>
-        <Head title="読込中 ─ 料理板" description="" image="" />
-        <Header />
-        <div>Loading...</div>
-      </div>
-    );
-  if (error !== null)
-    return (
-      <div>
-        <Head title="エラー ─ 料理板" description="" image="" />
-        <Header />
-        <div>{error}</div>
-      </div>
-    );
 
   return (
     <div>
@@ -117,13 +97,30 @@ const RecipePage: NextPage = () => {
   );
 };
 
-// https://stackoverflow.com/questions/61891845/is-there-a-way-to-keep-router-query-on-page-refresh-in-nextjs
-// CSR しているときにクエリパラメーターが URL に付いている状態でブラウザのリロードを行うと
-// 1. router.query が空のオブジェクトになる。
-// 2. 直後に router.query に URL に付いてたクエリパラメーターたちの値が代入される。
-// が起こるのだが、1. の挙動は求めていないので、下記の getServerSideProps はそれを抑制させるためのコードである。
-export function getServerSideProps(context) {
-  return { props: {} };
-}
+export const getServerSideProps: GetServerSideProps = async ({
+  params,
+  req,
+}) => {
+  const id = Number(params?.id);
+  if (id === 0 || isNaN(id)) {
+    return {
+      notFound: true,
+    };
+  } else {
+    let recipe: Recipe;
+
+    // 該当 ID のレシピが存在しない場合は not found を返す。
+    // それ以外のエラーに今は対応せず、とりあえず例外を投げる
+    try {
+      recipe = await getRecipe(id);
+    } catch (e) {
+      if (e.message == "Not Found") return { notFound: true };
+      else throw e;
+    }
+    return {
+      props: { recipe: recipe },
+    };
+  }
+};
 
 export default RecipePage;

@@ -1,8 +1,6 @@
 import Link from "next/link";
-import next, { NextPage } from "next";
 import { FC } from "react";
-import { getRecipes, Recipe } from "../lib/client/recipe";
-import Header from "./header";
+import { Recipe } from "../lib/client/recipe";
 import RecipeListElement from "./recipe-list-element";
 
 type Props = {
@@ -42,7 +40,7 @@ const RecipeList: FC<Props> = (props) => {
         </div>
         <div>
           {nextRecipeAPIParamsString !== null && (
-            <Link href={`/?${nextRecipeAPIParamsString.toString()}`}>
+            <Link href={`?${nextRecipeAPIParamsString.toString()}`}>
               次のページ
             </Link>
           )}
