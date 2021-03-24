@@ -84,7 +84,7 @@ const RecipePage: NextPage<Props> = (props) => {
             {recipe.ingredients
               .filter((ing) => ing.name !== "")
               .map((ing, i) => (
-                <div className="flex justify-between">
+                <div className="flex justify-between" key={i}>
                   <span className="font-semibold m-2 ml-4">{ing.name}</span>
                   <span className="m-2 mr-4">{ing.quantity}</span>
                 </div>
@@ -94,7 +94,9 @@ const RecipePage: NextPage<Props> = (props) => {
           <h3 className="px-2 py-1 bg-gray-300 mb-2">手順</h3>
           <ol className="divide-y list-decimal list-inside">
             {recipe.steps.map((step, i) => (
-              <li className="p-2">{step}</li>
+              <li className="p-2" key={i}>
+                {step}
+              </li>
             ))}
           </ol>
         </main>

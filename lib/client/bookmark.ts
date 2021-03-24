@@ -42,7 +42,7 @@ export async function addBookmark(id: number): Promise<void> {
   return new Promise<void>((resolve, reject) => {
     if (!initialized) reject("DB not initialized yet");
     const objStore = bookmarkDB
-      .transaction(BOOKMARK_DB_RECIPE_LIST_NAME, "readonly")
+      .transaction(BOOKMARK_DB_RECIPE_LIST_NAME, "readwrite")
       .objectStore(BOOKMARK_DB_RECIPE_LIST_NAME);
 
     const req = objStore.add(id);
@@ -61,7 +61,7 @@ export async function removeBookmark(id: number): Promise<boolean> {
   return new Promise<boolean>((resolve, reject) => {
     if (!initialized) reject("DB not initialized yet");
     const objStore = bookmarkDB
-      .transaction(BOOKMARK_DB_RECIPE_LIST_NAME, "readonly")
+      .transaction(BOOKMARK_DB_RECIPE_LIST_NAME, "readwrite")
       .objectStore(BOOKMARK_DB_RECIPE_LIST_NAME);
 
     const req = objStore.delete(id);
@@ -95,9 +95,9 @@ export async function isInBookmark(id: number): Promise<boolean> {
  * @returns 新たにブックマークに追加された場合は true を、削除された場合は false
  */
 export async function toggleBookmark(id: number): Promise<boolean> {
-  return new Promise<boolean>((resolve, reject) => {
+  return new Promise<boolean>(async (resolve, reject) => {
     if (!initialized) reject("DB not initialized yet");
-    if (isInBookmark(id)) {
+    if (await isInBookmark(id)) {
       removeBookmark(id);
       return false;
     } else {
