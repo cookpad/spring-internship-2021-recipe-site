@@ -1,15 +1,30 @@
 import { GetServerSideProps, NextPage } from "next";
+import { useState } from "react";
 import Head from "../../components/head";
 import Header from "../../components/header";
 import { getRecipe, Recipe } from "../../lib/recipe";
+import {
+  initializeBookmark,
+  isInBookmark,
+  toggleBookmark,
+} from "../../lib/bookmark";
 
 type Props = {
   // ページで表示するレシピ
   recipe: Recipe;
+
+  // ページを開いた段階でブックマークに追加されているか
+  bookmarked: boolean;
 };
 
 const RecipePage: NextPage<Props> = (props) => {
   const { recipe } = props;
+  const [bookmarked, setBookmarked] = useState(props.bookmarked);
+
+  const onClickBookmarkButton = async () => {
+    const added = await toggleBookmark(props.recipe.id);
+    setBookmarked(added);
+  };
 
   return (
     <div>
@@ -38,6 +53,15 @@ const RecipePage: NextPage<Props> = (props) => {
           </div>
 
           <p className="m-3">{recipe.description}</p>
+
+          <div className="flex justify-center">
+            <button
+              className="text-lg p-2 mx-5 my-2 mb-4 bg-yellow-200 hover:bg-yellow-300 font-bold rounded"
+              onClick={onClickBookmarkButton}
+            >
+              {bookmarked ? "📌 レシピを保存" : "🗑️ ブックマーク解除"}
+            </button>
+          </div>
 
           <h3 className="px-2 py-1 bg-gray-300 mb-2">材料</h3>
           <div className="divide-y">
@@ -83,8 +107,9 @@ export const getServerSideProps: GetServerSideProps = async ({
       if (e.message == "Not Found") return { notFound: true };
       else throw e;
     }
+    await initializeBookmark();
     return {
-      props: { recipe: recipe },
+      props: { recipe: recipe, bookmarked: await isInBookmark(recipe.id) },
     };
   }
 };
