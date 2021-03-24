@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import * as GetRecipes from "../@types/recipe-api/getRecipes";
 import * as SearchRecipes from "../@types/recipe-api/getSearch";
 import { Page } from "./Page";
@@ -19,10 +20,21 @@ export const RecipeList: FC<Props> = (props) => {
             <article>
               <Link href={"/recipes/" + recipe.id.toString()}>
                 <div className="recipeListItem">
-                  {recipe.image_url && (
-                    <img src={recipe.image_url} alt="レシピ画像" />
-                  )}
-                  <div>
+                  <div className="recipeListImage">
+                    <Image
+                      src={
+                        recipe.image_url
+                          ? recipe.image_url
+                          : "/static/noimage.jpg"
+                      }
+                      alt="レシピ画像"
+                      className="recipeListImage"
+                      width={300}
+                      height={150}
+                    />
+                  </div>
+
+                  <div className="recipeListDescription">
                     <h2>{recipe.title}</h2>
                     <p>{recipe.description}</p>
                   </div>

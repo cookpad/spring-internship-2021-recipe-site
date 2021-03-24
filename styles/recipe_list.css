@@ -9,12 +9,12 @@
   border-bottom: 1px solid lightgray;
 }
 
-.recipeListItem > img {
-  width: 40%;
-  object-fit: contain;
-  padding: 5px;
+.recipeListImage {
+  flex-grow: 4;
+  flex-basis: 50px;
 }
 
-.recipeListItem > div {
-  padding: 1%;
+.recipeListDescription {
+  flex-grow: 6;
+  flex-basis: 50px;
 }
