@@ -5,6 +5,7 @@ import Header from "../../components/header";
 import { getRecipe, Recipe } from "../../lib/client/recipe";
 import { toggleBookmark } from "../../lib/client/bookmark";
 import { useRouter } from "next/dist/client/router";
+import Image from "next/image";
 
 const RecipePage: NextPage = () => {
   const router = useRouter();
@@ -58,7 +59,15 @@ const RecipePage: NextPage = () => {
       {recipe && (
         <main>
           {recipe.image_url ? (
-            <img src={recipe.image_url} alt="レシピ画像" className="w-full" />
+            <div className="w-full">
+              <Image
+                src={recipe.image_url}
+                alt="レシピ画像"
+                width={400}
+                height={250}
+                objectFit="contain"
+              />
+            </div>
           ) : (
             // レシピ画像が無い場合は絵文字を表示
             <p className="text-9xl text-center">🍽️</p>
