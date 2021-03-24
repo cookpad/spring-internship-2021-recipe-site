@@ -10,10 +10,6 @@ import { SearchBar } from '../molecules/searchBar'
 
 export type Header = {
   headerTitle: string
-  inputValue: string
-  onChange: (text: string) => void
-
-  onClick: () => void
 }
 
 // export type HeaderPropType = {
@@ -42,12 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
-export const Header: React.VFC<Header> = ({
-  headerTitle,
-  inputValue,
-  onChange,
-  onClick,
-}) => {
+export const Header: React.VFC<Header> = ({ headerTitle }) => {
   const classes = useStyles()
 
   return (
@@ -58,10 +49,7 @@ export const Header: React.VFC<Header> = ({
 
       <SearchBar
         classNameInput={classes.input}
-        value={inputValue}
-        onChange={onChange}
         classNameButton={classes.button}
-        onClick={onClick}
       />
 
       {/* TODO: 検索機能をヘッダーに追加 */}

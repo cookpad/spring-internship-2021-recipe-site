@@ -57,17 +57,11 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export type SearchPagePropType = {
   recipeList: Recipe[]
-  searchWord: string
-  onClickSearch: () => void
-  onChangeSearch: (text: string) => void
   onClickNext: () => void
   onClickPrev: () => void
 }
 export const SearchPage: React.VFC<SearchPagePropType> = ({
   recipeList,
-  searchWord,
-  onClickSearch,
-  onChangeSearch,
   onClickNext,
   onClickPrev,
 }) => {
@@ -75,12 +69,7 @@ export const SearchPage: React.VFC<SearchPagePropType> = ({
 
   return (
     <div>
-      <Header
-        headerTitle="レシピ検索サイト"
-        inputValue={searchWord}
-        onChange={onChangeSearch}
-        onClick={onClickSearch}
-      />
+      <Header headerTitle="レシピ検索サイト" />
 
       {/* 案1 */}
       {/* <input

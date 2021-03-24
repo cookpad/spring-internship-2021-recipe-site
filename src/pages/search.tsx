@@ -1,11 +1,14 @@
+import { NextPage } from 'next'
+import { useRouter } from 'next/router'
 import React from 'react'
-import type { NextPage } from 'next'
-import { getRecipeList } from '../lib/recipe'
-
-import type { PagingLinks, Recipe } from '../types/recipe'
 import { SearchPage } from 'src/components/templates/searchPage'
+import { getRecipeList } from 'src/lib/recipe'
+import { search } from 'src/lib/search'
+import { PagingLinks, Recipe } from 'src/types/recipe'
 
-const TopPage: NextPage = () => {
+const Search: NextPage = () => {
+  const router = useRouter()
+  const keyword = String(router.query.keyword)
   const [recipeList, setRecipeList] = React.useState<Recipe[] | null>(null)
   const [pagingLink, setPagingLink] = React.useState<PagingLinks | null>(null)
 
@@ -30,13 +33,12 @@ const TopPage: NextPage = () => {
       return null
     }
   }
-
-  // 初期処理
   const init = async () => {
-    const response = await getRecipeList(null)
+    const response = await search(keyword)
     setRecipeList(response.recipes)
     setPagingLink(response.links)
   }
+
   React.useEffect(() => {
     init()
   }, [])
@@ -53,4 +55,4 @@ const TopPage: NextPage = () => {
   )
 }
 
-export default TopPage
+export default Search

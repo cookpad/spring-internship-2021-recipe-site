@@ -40,30 +40,13 @@ export type RecipePagePropType = {
 }
 export const RecipePage: React.VFC<RecipePagePropType> = ({ recipe }) => {
   const classes = useStyles()
-  //   const router = useRouter()
-  //   const [keyword, setKeyword] = React.useState<string>('')
-
-  //   const onClickSearch = () => {
-  //     //未入力の時
-  //     if (!keyword) {
-  //       return
-  //     }
-
-  //     router.push({
-  //       pathname: '/', //URL
-  //       query: { keyword: keyword }, //検索クエリ
-  //     })
-  //   }
+  const router = useRouter()
+  const [keyword, setKeyword] = React.useState<string>('')
 
   return (
     //   TODO: ここのデザイン
     <div>
-      {/* <Header
-        headerTitle="レシピ検索サイト"
-        inputValue={keyword}
-        onChange={(e) => setKeyword(e.target.value)}
-        onClick={onClickSearch}
-      /> */}
+      <Header headerTitle="レシピ検索サイト" />
 
       {recipe && (
         <main>

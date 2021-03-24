@@ -4,7 +4,7 @@ import React from 'react'
 export type MyButtonPropType = {
   className: string
   title: string
-  onClick: () => void
+  type: 'submit'
 }
 
 // TODO: オーバーロードができない
@@ -12,10 +12,10 @@ export type MyButtonPropType = {
 export const MyButton: React.VFC<MyButtonPropType> = ({
   className,
   title,
-  onClick,
+  type,
 }) => {
   return (
-    <Button className={className} onClick={onClick}>
+    <Button className={className} type={type}>
       {title}
     </Button>
   )

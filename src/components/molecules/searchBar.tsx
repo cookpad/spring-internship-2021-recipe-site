@@ -1,33 +1,32 @@
-import React from 'react'
+import router from 'next/router'
+import React, { FormEvent } from 'react'
 import { MyButton } from '../atoms/myButton'
 import { MyInput } from '../atoms/myInput'
 
 export type SearchBarPropType = {
   classNameInput: string
-  value: string
-  onChange: (text: string) => void
-
   classNameButton: string
-  onClick: () => void
 }
 
 export const SearchBar: React.VFC<SearchBarPropType> = ({
   classNameInput,
-  value,
-  onChange,
   classNameButton,
-  onClick,
 }) => {
+  const [searchWord, setSearchWord] = React.useState<string>('')
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault()
+    router.push(`/search/?keyword=${encodeURIComponent(searchWord)}`)
+  }
   return (
-    <div>
+    <form onSubmit={handleSubmit}>
       <MyInput
         className={classNameInput}
         placeholder="Search..."
-        value={value}
-        onChange={onChange}
+        value={searchWord}
+        onChange={setSearchWord}
       />
 
-      <MyButton className={classNameButton} title="検索" onClick={onClick} />
-    </div>
+      <MyButton className={classNameButton} title="検索" type="submit" />
+    </form>
   )
 }
