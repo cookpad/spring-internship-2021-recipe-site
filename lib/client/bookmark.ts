@@ -3,7 +3,7 @@ import {
   BOOKMARK_DB_VERSION,
   BOOKMARK_DB_RECIPE_LIST_NAME,
   BOOKMARK_RECIPE_AMOUNT_PER_PAGE,
-} from "./constants";
+} from "../constants";
 
 let bookmarkDB: IDBDatabase;
 let initialized = false;

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import next, { NextPage } from "next";
 import { FC } from "react";
-import { getRecipes, Recipe } from "../lib/recipe";
+import { getRecipes, Recipe } from "../lib/client/recipe";
 import Header from "./header";
 import RecipeListElement from "./recipe-list-element";
 

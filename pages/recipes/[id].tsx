@@ -2,12 +2,12 @@ import { GetServerSideProps, NextPage } from "next";
 import { useState } from "react";
 import Head from "../../components/head";
 import Header from "../../components/header";
-import { getRecipe, Recipe } from "../../lib/recipe";
+import { getRecipe, Recipe } from "../../lib/client/recipe";
 import {
   initializeBookmark,
   isInBookmark,
   toggleBookmark,
-} from "../../lib/bookmark";
+} from "../../lib/client/bookmark";
 
 type Props = {
   // ページで表示するレシピ

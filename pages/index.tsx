@@ -2,7 +2,7 @@ import { GetServerSideProps, NextPage } from "next";
 import Head from "../components/head";
 import Header from "../components/header";
 import RecipeList from "../components/recipe-list";
-import { getRecipes, Recipe } from "../lib/recipe";
+import { getRecipes, Recipe } from "../lib/client/recipe";
 
 type Props = {
   // このページで表示するレシピのリスト

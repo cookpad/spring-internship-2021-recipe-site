@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { FC } from "react";
-import { Recipe } from "../lib/recipe";
+import { Recipe } from "../lib/client/recipe";
 
 /**
  * レシピ一覧での各レシピの表示に利用するコンポーネント

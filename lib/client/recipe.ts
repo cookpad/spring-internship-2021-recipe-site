@@ -1,10 +1,10 @@
 // [こちら](https://gist.github.com/hokaccha/0db2c6c26ec0f7dfc680cf5010e61180#api%E4%BB%95%E6%A7%98%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E5%9E%8B)を流用
 
-import api from "./api-client";
+import api from "../server/api-client";
 import {
   ORIGIN_API_ENDPOINT_RECIPES,
   ORIGIN_API_ENDPOINT_SEARCH,
-} from "./constants";
+} from "../constants";
 
 export type Recipe = {
   // レシピID

@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import api from "../../../lib/api-client";
+import api from "../../../lib/server/api-client";
 import { ORIGIN_API_ENDPOINT_RECIPES } from "../../../lib/constants";
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
