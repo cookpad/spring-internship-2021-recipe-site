@@ -110,7 +110,6 @@ const SearchPage: FC = () => {
     }
   };
 
-  console.log(query);
   return (
     <div>
       <Header initialQuery={query ? query.keyword : ""} />

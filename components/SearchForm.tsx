@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { QueryParameter } from "../@types/recipe-api/getSearch";
 
@@ -28,7 +28,13 @@ const SearchInput: FC<{
 }> = (props) => {
   const [text, setText] = useState<string>(props.initialQuery);
 
+  useEffect(() => {
+    setText(props.initialQuery);
+  }, [props.initialQuery]);
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("initial: " + props.initialQuery);
+    console.log("current: " + text);
     setText(event.target.value);
   };
 
@@ -46,7 +52,7 @@ const SearchInput: FC<{
           placeholder="検索"
           spellCheck="true"
           onChange={handleChange}
-          value={props.initialQuery}
+          value={text}
         />
       </form>
     </div>
