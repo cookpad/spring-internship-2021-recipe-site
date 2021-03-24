@@ -117,4 +117,13 @@ const RecipePage: NextPage = () => {
   );
 };
 
+// https://stackoverflow.com/questions/61891845/is-there-a-way-to-keep-router-query-on-page-refresh-in-nextjs
+// CSR しているときにクエリパラメーターが URL に付いている状態でブラウザのリロードを行うと
+// 1. router.query が空のオブジェクトになる。
+// 2. 直後に router.query に URL に付いてたクエリパラメーターたちの値が代入される。
+// が起こるのだが、1. の挙動は求めていないので、下記の getServerSideProps はそれを抑制させるためのコードである。
+export function getServerSideProps(context) {
+  return { props: {} };
+}
+
 export default RecipePage;
