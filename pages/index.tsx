@@ -1,4 +1,5 @@
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
+import Head from "../components/head";
 import Header from "../components/header";
 import RecipeList from "../components/recipe-list";
 import { getRecipes, Recipe } from "../lib/recipe";
@@ -17,15 +18,20 @@ type Props = {
 const TopPage: NextPage<Props> = (props) => {
   return (
     <div>
+      <Head
+        title="料理板"
+        description="レシピ検索No.?／料理レシピ載せるなら 料理板"
+        image="https://placehold.jp/1200x630.png"
+      />
       <Header />
       <RecipeList {...props} />
     </div>
   );
 };
 
-export const getServerSideProps = async ({ query }) => {
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const response = await getRecipes({
-    page: query.page,
+    page: Number(query.page as string),
   });
 
   let nextRecipeAPIParamsString;

@@ -1,12 +1,8 @@
 import { GetServerSideProps, NextPage } from "next";
+import Head from "../components/head";
 import Header from "../components/header";
 import RecipeList from "../components/recipe-list";
-import {
-  getRecipes,
-  Recipe,
-  searchRecipes,
-  SearchRecipesResponse,
-} from "../lib/recipe";
+import { Recipe, searchRecipes, SearchRecipesResponse } from "../lib/recipe";
 
 type Props = {
   // このページで表示するレシピのリスト
@@ -28,6 +24,14 @@ type Props = {
 const TopPage: NextPage<Props> = (props) => {
   return (
     <div>
+      <Head
+        title={`${props.keyword} の検索結果 ─ 料理板`}
+        description="レシピ検索No.?／料理レシピ載せるなら 料理板"
+        image="https://placehold.jp/1200x630.png"
+      />
+      <head>
+        <title>料理板 ─ {props.keyword} の検索結果</title>
+      </head>
       <Header searchQuery={props.keyword} />
       {props.recipeFound ? (
         <RecipeList {...props} />

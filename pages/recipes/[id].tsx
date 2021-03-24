@@ -1,4 +1,5 @@
 import { GetServerSideProps, NextPage } from "next";
+import Head from "../../components/head";
 import Header from "../../components/header";
 import { getRecipe, Recipe } from "../../lib/recipe";
 
@@ -12,6 +13,11 @@ const RecipePage: NextPage<Props> = (props) => {
 
   return (
     <div>
+      <Head
+        title={`${recipe.title} ─ 料理板`}
+        description={recipe.description}
+        image={recipe.image_url}
+      />
       <Header />
       {recipe && (
         <main>
@@ -57,8 +63,11 @@ const RecipePage: NextPage<Props> = (props) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const id = Number(context.params?.id);
+export const getServerSideProps: GetServerSideProps = async ({
+  params,
+  req,
+}) => {
+  const id = Number(params?.id);
   if (id === 0 || isNaN(id)) {
     return {
       notFound: true,
