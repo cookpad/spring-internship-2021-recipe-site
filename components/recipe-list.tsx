@@ -37,12 +37,12 @@ const RecipeList: FC<Props> = (props) => {
       <footer className="flex justify-between m-4">
         <div>
           {prevRecipeAPIParamsString !== null && (
-            <Link href={`?${prevRecipeAPIParamsString}`}>前のページ</Link>
+            <Link href={`/?${prevRecipeAPIParamsString}`}>前のページ</Link>
           )}
         </div>
         <div>
           {nextRecipeAPIParamsString !== null && (
-            <Link href={`?${nextRecipeAPIParamsString.toString()}`}>
+            <Link href={`/?${nextRecipeAPIParamsString.toString()}`}>
               次のページ
             </Link>
           )}
