@@ -70,8 +70,10 @@ export async function getRecipes(
   //   return require("../data/recipes.json") as Response;
 
   let params = {};
-  if (query.page) params["page"] = query.page.toString();
-  if (query.id) params["id"] = query.id;
+  if (query) {
+    if (query.page) params["page"] = query.page.toString();
+    if (query.id) params["id"] = query.id;
+  }
 
   const req = await fetch(
     `${CLIENT_API_ENDPOINT_RECIPES}?${new URLSearchParams(params)}`
