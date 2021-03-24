@@ -1,4 +1,4 @@
-import { API_HEADER_X_API_KEY } from "./constants";
+import { ORIGIN_API_HEADER_X_API_KEY } from "./constants";
 
 /**
  * レシピ取得 API 等を利用する際に環境変数として指定されている API キーを利用して HTTP リクエストを行います。
@@ -13,7 +13,7 @@ export default function api(
   let headers = {};
   if (init) headers = init.headers;
 
-  headers[API_HEADER_X_API_KEY] = process.env.API_HEADER_X_API_KEY;
+  headers[ORIGIN_API_HEADER_X_API_KEY] = process.env.API_HEADER_X_API_KEY;
 
   return fetch(input, { ...init, headers });
 }
