@@ -4,18 +4,14 @@ import Avatar from '@material-ui/core/Avatar'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
 import {
   Button,
-  Card,
-  CardContent,
-  CardMedia,
   Divider,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Typography,
 } from '@material-ui/core'
-import { useRouter } from 'next/router'
 import { Recipe } from 'src/types/recipe'
+import { Header } from 'src/components/organisms/header'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -38,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
       height: 150,
     },
     content: {
-      flex: '1 0 auto',
+      margin: theme.spacing(5),
     },
     details: {
       display: 'flex',
@@ -53,6 +49,9 @@ const useStyles = makeStyles((theme: Theme) =>
     input: {
       width: '70%',
     },
+    paging: {
+      margin: theme.spacing(5),
+    },
   }),
 )
 
@@ -61,30 +60,36 @@ export type SearchPagePropType = {
   searchWord: string
   onClickSearch: () => void
   onChangeSearch: (text: string) => void
-  onClickSelect: (index: number) => void
+  onClickNext: () => void
+  onClickPrev: () => void
 }
 export const SearchPage: React.VFC<SearchPagePropType> = ({
   recipeList,
   searchWord,
   onClickSearch,
   onChangeSearch,
-  onClickSelect,
+  onClickNext,
+  onClickPrev,
 }) => {
   const classes = useStyles()
 
   return (
     <div>
-      <h1>たけたけレシピ</h1>
+      <Header
+        headerTitle="レシピ検索サイト"
+        inputValue={searchWord}
+        onChange={onChangeSearch}
+        onClick={onClickSearch}
+      />
 
-      <input
+      {/* 案1 */}
+      {/* <input
         className={classes.input}
         type="text"
         placeholder="search"
         value={searchWord}
         onChange={(e) => onChangeSearch(e.target.value)}
       />
-
-      {/* TODO: デザイン整える */}
       <Button
         className={classes.button}
         variant="contained"
@@ -92,20 +97,13 @@ export const SearchPage: React.VFC<SearchPagePropType> = ({
         onClick={() => onClickSearch()}
       >
         検索
-      </Button>
-      {/* <input type="button" placeholder="検索" onClick={() => onClickSearch()} /> */}
+      </Button> */}
 
-      {/* 案1 */}
       <div>
         <List className={classes.root}>
           {recipeList.map((recipe) => (
             <div key={recipe.id}>
-              <ListItem
-                alignItems="flex-start"
-                button
-                key={recipe.id}
-                onClick={() => onClickSelect(recipe.id)}
-              >
+              <ListItem alignItems="flex-start" button key={recipe.id}>
                 <ListItemAvatar>
                   <Avatar
                     className={classes.large}
@@ -113,9 +111,11 @@ export const SearchPage: React.VFC<SearchPagePropType> = ({
                   />
                 </ListItemAvatar>
 
-                {/* TODO: 改良の余地あり */}
+                {/* TODO: ページ遷移の部分、改良の余地あり */}
                 <Link href={'recipes/' + recipe.id}>
+                  {/* TODO: 文字のデザイン変更 */}
                   <ListItemText
+                    className={classes.content}
                     primary={`${recipe.title}`}
                     secondary={`${recipe.description}`}
                   />
@@ -126,25 +126,28 @@ export const SearchPage: React.VFC<SearchPagePropType> = ({
           ))}
         </List>
       </div>
-      {/* <div className={classes.root}> */}
-      {/* {recipeList.map((recipe) => (
-        <Card
-          className={classes.root}
-          key={recipe.id}
-          // onClick={() => onClickSelect(recipe.id)}
+
+      <div>
+        {/* TODO: 内容が保持されていなければ可視化されないようにする */}
+        <Button
+          className={classes.paging}
+          variant="contained"
+          color="secondary"
+          onClick={() => onClickPrev()}
         >
-          <CardMedia className={classes.cover} image={`${recipe.image_url}`} />
+          preview
+        </Button>
 
-          <div className={classes.details}>
-            <CardContent className={classes.content}>
-              <Typography component="h5" variant="h5">
-                {recipe.title}
-              </Typography>
-            </CardContent>
-
-          </div>
-        </Card>
-      ))} */}
+        {/* TODO: 同上 */}
+        <Button
+          className={classes.paging}
+          variant="contained"
+          color="secondary"
+          onClick={() => onClickNext()}
+        >
+          next
+        </Button>
+      </div>
     </div>
   )
 }

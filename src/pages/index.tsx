@@ -1,6 +1,5 @@
 import React from 'react'
 import type { NextPage } from 'next'
-import { Router } from 'next/router'
 import { getRecipeList } from '../lib/recipe'
 
 import type { PagingLinks, Recipe } from '../types/recipe'
@@ -11,7 +10,6 @@ const TopPage: NextPage = () => {
   const [recipeList, setRecipeList] = React.useState<Recipe[] | null>(null)
   const [pagingLink, setPagingLink] = React.useState<PagingLinks | null>(null)
   const [searchWord, setSearchWord] = React.useState<string>('')
-  const [selectedIndex, setSelectedIndex] = React.useState<number>(0)
 
   const handleOnClickSearch = async () => {
     if (searchWord !== '') {
@@ -23,9 +21,26 @@ const TopPage: NextPage = () => {
     }
   }
 
-  const handleOnClickSelect = (index: number) => {
-    setSelectedIndex(index)
-    // TODO: ここからページ遷移できればいいなと思う
+  const handleOnClickNext = async () => {
+    if (pagingLink && pagingLink.next) {
+      const response = await getRecipeList(pagingLink.next)
+      setRecipeList(response.recipes)
+      setPagingLink(response.links)
+      window.scrollTo(0, 0)
+    } else {
+      return null
+    }
+  }
+
+  const handleOnClickPrev = async () => {
+    if (pagingLink && pagingLink.prev) {
+      const response = await getRecipeList(pagingLink.prev)
+      setRecipeList(response.recipes)
+      setPagingLink(response.links)
+      window.scrollTo(0, 0)
+    } else {
+      return null
+    }
   }
 
   // 初期処理
@@ -47,7 +62,8 @@ const TopPage: NextPage = () => {
       searchWord={searchWord}
       onClickSearch={handleOnClickSearch}
       onChangeSearch={(e) => setSearchWord(e)} // TODO: よくわかっていない
-      onClickSelect={(e) => handleOnClickSelect(e)}
+      onClickNext={handleOnClickNext}
+      onClickPrev={handleOnClickPrev}
     />
   )
 }

@@ -2,51 +2,20 @@ import type { GetServerSideProps, NextPage } from 'next'
 import { getRecipe } from '../../lib/recipe'
 
 import type { Recipe } from '../../types/recipe'
+import { RecipePage } from 'src/components/templates/recipePage'
 
 type Props = {
   recipe: Recipe
 }
 
-const RecipePage: NextPage<Props> = (props) => {
+const EachPage: NextPage<Props> = (props) => {
   const { recipe } = props
 
   if (recipe === null) {
     return <div>loading...</div>
   }
 
-  return (
-    <div>
-      <h1>My Recipe Site</h1>
-
-      {recipe && (
-        <main>
-          <h2>{recipe.title}</h2>
-
-          {recipe.image_url && (
-            <img src={recipe.image_url} alt="レシピ画像" width="300" />
-          )}
-
-          <p>{recipe.description}</p>
-
-          <h3>材料</h3>
-          <ol>
-            {recipe.ingredients.map((ing, i) => (
-              <li key={i}>
-                {ing.name} : {ing.quantity}
-              </li>
-            ))}
-          </ol>
-
-          <h3>手順</h3>
-          <ol>
-            {recipe.steps.map((step, i) => (
-              <li key={i}>{step}</li>
-            ))}
-          </ol>
-        </main>
-      )}
-    </div>
-  )
+  return <RecipePage recipe={recipe} />
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -65,4 +34,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 }
 
-export default RecipePage
+export default EachPage
