@@ -133,7 +133,7 @@ const TopPage: NextPage = () => {
     <div>
       <Head title="料理板 ─ ブックマーク" />
       <Header />
-      <div className="bg-gray-200">
+      <div className="p-4 border-b-2">
         <select
           name="sorting-order-selector"
           id="sorting-order-selector"
