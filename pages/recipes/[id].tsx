@@ -14,6 +14,7 @@ import {
   isInBookmark,
   clearBookmark,
   toggleBookmark,
+  updateBookmark,
 } from "../../lib/client/bookmark";
 import { useRouter } from "next/dist/client/router";
 import Image from "next/image";
@@ -37,6 +38,9 @@ const RecipePage: NextPage<Props> = (props) => {
         await initializeBookmark();
         let bookmarked = await isInBookmark(recipe.id);
         state = bookmarked ? "Bookmarked" : "NotBookmarked";
+
+        // ブックマークされていた場合はブックマークのデータベース内の当該レシピの情報更新を行う
+        if (bookmarked) updateBookmark(recipe);
       } catch (e) {
         console.error(e);
         state = "Error";

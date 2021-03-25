@@ -27,13 +27,16 @@ const Header: FC<Props> = (props) => {
 
   return (
     <header>
-      <div className="p-4 bg-gray-300">
-        <Link href="/">
+      <Link href="/">
+        <div className="p-4 bg-gray-300">
           <p className="text-lg text-center">料理板</p>
-        </Link>
-      </div>
+        </div>
+      </Link>
 
-      <div className="p-4 bg-gray-100 w-full flex justify-content">
+      <div className="px-2 py-4 bg-gray-100 w-full flex justify-content">
+        <Link href="/bookmark">
+          <span className="px-2 mr-2 text-3xl">🔖</span>
+        </Link>
         <input
           type="search"
           name="search"

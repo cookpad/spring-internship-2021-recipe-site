@@ -1,3 +1,4 @@
+import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
 import { FC } from "react";
 import { Recipe } from "../lib/recipe";
@@ -18,6 +19,8 @@ type Props = {
  * トップページ
  */
 const RecipeList: FC<Props> = (props) => {
+  const router = useRouter();
+
   const {
     recipes,
     nextRecipeAPIParamsString,
@@ -34,13 +37,19 @@ const RecipeList: FC<Props> = (props) => {
 
       <footer className="flex justify-between m-4">
         <div>
-          {prevRecipeAPIParamsString !== null && (
-            <Link href={`/?${prevRecipeAPIParamsString}`}>前のページ</Link>
+          {prevRecipeAPIParamsString != null && (
+            <Link href={`${router.basePath}?${prevRecipeAPIParamsString}`}>
+              前のページ
+            </Link>
           )}
         </div>
         <div>
-          {nextRecipeAPIParamsString !== null && (
-            <Link href={`?${nextRecipeAPIParamsString.toString()}`}>
+          {nextRecipeAPIParamsString != null && (
+            <Link
+              href={`${
+                router.basePath
+              }?${nextRecipeAPIParamsString.toString()}`}
+            >
               次のページ
             </Link>
           )}
