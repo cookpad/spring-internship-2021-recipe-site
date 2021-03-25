@@ -1,4 +1,4 @@
-import { GetServerSideProps, GetStaticProps, NextPage } from "next";
+import { GetStaticProps, NextPage } from "next";
 import { useEffect, useState } from "react";
 import Head from "../../components/head";
 import Header from "../../components/header";
@@ -8,30 +8,46 @@ import {
   GetRecipesResponse,
   Recipe,
 } from "../../lib/recipe";
-import { toggleBookmark } from "../../lib/client/bookmark";
+import {
+  fetchBookmark,
+  initializeBookmark,
+  isInBookmark,
+  clearBookmark,
+  toggleBookmark,
+} from "../../lib/client/bookmark";
 import { useRouter } from "next/dist/client/router";
 import Image from "next/image";
-import recipes from "../api/recipes";
 
 type Props = {
   // ページで表示するレシピ
   recipe: Recipe;
 };
 
+type BookmarkState = "Loading" | "Error" | "Bookmarked" | "NotBookmarked";
+
 const RecipePage: NextPage<Props> = (props) => {
   const router = useRouter();
   const { recipe } = props;
-  const [bookmarked, setBookmarked] = useState<boolean>(false);
+  const [bookmarkState, setBookmarkState] = useState<BookmarkState>("Loading");
 
   useEffect(() => {
     (async () => {
-      // bookmark
+      let state: BookmarkState;
+      try {
+        await initializeBookmark();
+        let bookmarked = await isInBookmark(recipe.id);
+        state = bookmarked ? "Bookmarked" : "NotBookmarked";
+      } catch (e) {
+        console.error(e);
+        state = "Error";
+      }
+      setBookmarkState(state);
     })();
   }, []);
 
-  const onClickBookmarkButton = async () => {
-    const added = await toggleBookmark(recipe.id);
-    setBookmarked(added);
+  const onClickBookmarkButton = async (e) => {
+    const bookmarked = await toggleBookmark(recipe);
+    setBookmarkState(bookmarked ? "Bookmarked" : "NotBookmarked");
   };
 
   return (
@@ -74,8 +90,19 @@ const RecipePage: NextPage<Props> = (props) => {
             <button
               className="text-lg p-2 mx-5 my-2 mb-4 bg-yellow-200 hover:bg-yellow-300 font-bold rounded"
               onClick={onClickBookmarkButton}
+              disabled={
+                bookmarkState === "Loading" || bookmarkState === "Error"
+              }
             >
-              {!bookmarked ? "📌 レシピを保存" : "🗑️ ブックマーク解除"}
+              {bookmarkState === "Loading"
+                ? "⌛ 読込中"
+                : bookmarkState === "NotBookmarked"
+                ? "📌 レシピを保存"
+                : bookmarkState === "Bookmarked"
+                ? "🗑️ ブックマーク解除"
+                : bookmarkState === "Error"
+                ? "❌ エラー"
+                : "❓ Unexpected state"}
             </button>
           </div>
 
